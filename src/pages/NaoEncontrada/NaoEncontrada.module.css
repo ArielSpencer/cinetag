@@ -1,0 +1,23 @@
+.container {
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 15vh;
+  align-content: center;
+}
+
+.link {
+  color: var(--preto);
+  font-weight: 700;
+  padding: 10px 20px;
+  background: var(--cinza);
+  border: 2px solid var(--preto);
+  border-radius: 10px;
+  text-decoration: none;
+  width: 350px;
+}
+
+.link:hover {
+  background: var(--hover);
+}
