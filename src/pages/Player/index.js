@@ -6,19 +6,36 @@ import NaoEncontrada from "pages/NaoEncontrada";
 import { useEffect, useState } from "react";
 
 function Player() {
-  const [video, setVideo] = useState();
+  const [video, setVideo] = useState(null);
+  const [loading, setLoading] = useState(true);
   const parametros = useParams();
 
   useEffect(() => {
-    fetch(`https://my-json-server.typicode.com/ArielSpencer/api-cinetag/videos?id=${parametros.id}`)
-      .then(resposta => resposta.json())
-      .then(dados => {
-        setVideo(...dados)
-      })
-  }, [])
+    const fetchVideo = async () => {
+      try {
+        const resposta = await fetch(`https://my-json-server.typicode.com/ArielSpencer/api-cinetag/videos?id=${parametros.id}`);
+        const dados = await resposta.json();
+        if (dados.length === 0) {
+          setVideo(null);
+        } else {
+          setVideo(dados[0]);
+        }
+      } catch (erro) {
+        setVideo(null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!video) {
-    return <NaoEncontrada />
+    fetchVideo();
+  }, [parametros.id]);
+
+  if (loading) {
+    return <h2 className={styles.loading}>Carregando...</h2>;
+  }
+
+  if (video === null) {
+    return <NaoEncontrada />;
   }
 
   return (
